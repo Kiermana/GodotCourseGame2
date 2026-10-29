@@ -5,6 +5,7 @@
 [ext_resource type="AudioStream" uid="uid://b5f5seu34mi1f" path="res://Assets/audio/stretch2.ogg" id="2_hblmk"]
 [ext_resource type="AudioStream" uid="uid://bx43ahcn8xrer" path="res://Assets/audio/catapult.ogg" id="3_eawv1"]
 [ext_resource type="AudioStream" uid="uid://bmu243wuhmcrh" path="res://Assets/audio/kick_wood.ogg" id="4_dv2k2"]
+[ext_resource type="Texture2D" uid="uid://ld1ucjqkwowc" path="res://Assets/items/arrow.png" id="6_eawv1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_m4oba"]
 radius = 19.026299
@@ -42,3 +43,11 @@ stream = ExtResource("4_dv2k2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1177110019]
 shape = SubResource("CircleShape2D_m4oba")
+
+[node name="Arrow" type="Sprite2D" parent="." unique_id=838472839]
+visible = false
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("6_eawv1")
+offset = Vector2(150, 0)
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]
