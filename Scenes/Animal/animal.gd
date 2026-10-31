@@ -2,11 +2,17 @@ class_name Animal
 
 extends RigidBody2D
 
+const DRAG_LIM_MAX: Vector2 = Vector2(0,60)
+const DRAG_LIM_MIN: Vector2 = Vector2(-60,0)
+
+
 @onready var label: Label = $Label
 @onready var arrow: Sprite2D = $Arrow
+@onready var stretch_sound: AudioStreamPlayer2D = $StretchSound
 
 var _start: Vector2 = Vector2.ZERO
 var _drag_start: Vector2 = Vector2.ZERO
+var _dragged_vector: Vector2 = Vector2.ZERO
 var _is_dragging: bool = false
 
 func _ready() -> void:
@@ -14,8 +20,22 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	var debug_str: String = "FR:%s CC:%d SL:%s\n" % [freeze,get_contact_count(),sleeping]
-	debug_str += "is_dragging:%s drag_start:%0.f, %0.f" % [ _is_dragging, _drag_start.x, _drag_start.y]
+	debug_str += "is_dragging: %s drag_start: %0.f, %0.f" % [ _is_dragging, _drag_start.x, _drag_start.y]
+	debug_str += "\ndragged_vector:%0.f, %0.f" % [_dragged_vector.x, _dragged_vector.y]
 	label.text = debug_str
+
+func _physics_process(delta: float) -> void:
+	if _is_dragging: handle_dragging()
+
+func handle_dragging():
+	var new_vector: Vector2 = get_global_mouse_position() - _drag_start
+	new_vector = new_vector.clamp(DRAG_LIM_MIN,DRAG_LIM_MAX)
+	
+	var diff: Vector2 = new_vector - _dragged_vector
+	if diff.length() > 0 and !stretch_sound.playing:
+		stretch_sound.play()
+	_dragged_vector = new_vector
+	position = _start + new_vector
 
 func start_dragging():
 	arrow.show()
