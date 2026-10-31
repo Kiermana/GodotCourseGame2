@@ -4,8 +4,10 @@ extends RigidBody2D
 
 const DRAG_LIM_MAX: Vector2 = Vector2(0,60)
 const DRAG_LIM_MIN: Vector2 = Vector2(-60,0)
+const IMPULSE_MULT: float = 25.0
+const IMPULSE_MAX: float = 2000.0
 
-
+@onready var launch_sound: AudioStreamPlayer2D = $LaunchSound
 @onready var label: Label = $Label
 @onready var arrow: Sprite2D = $Arrow
 @onready var stretch_sound: AudioStreamPlayer2D = $StretchSound
@@ -14,19 +16,29 @@ var _start: Vector2 = Vector2.ZERO
 var _drag_start: Vector2 = Vector2.ZERO
 var _dragged_vector: Vector2 = Vector2.ZERO
 var _is_dragging: bool = false
+var _arrow_scale_x: float = 0.0
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_released("drag") and _is_dragging:
+		call_deferred("start_release") #used to stop the issue of frames releasing it for us
 
 func _ready() -> void:
 	_start = position
+	_arrow_scale_x = arrow.scale.x
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	var debug_str: String = "FR:%s CC:%d SL:%s\n" % [freeze,get_contact_count(),sleeping]
 	debug_str += "is_dragging: %s drag_start: %0.f, %0.f" % [ _is_dragging, _drag_start.x, _drag_start.y]
 	debug_str += "\ndragged_vector:%0.f, %0.f" % [_dragged_vector.x, _dragged_vector.y]
+	debug_str += "\nimpulse:%0.f, %0.f" % [calculate_impulse().x, calculate_impulse().y]
+		#debug string
 	label.text = debug_str
 
 func _physics_process(delta: float) -> void:
 	if _is_dragging: handle_dragging()
 
+func calculate_impulse():
+	return (_dragged_vector * IMPULSE_MULT) * -1
 func handle_dragging():
 	var new_vector: Vector2 = get_global_mouse_position() - _drag_start
 	new_vector = new_vector.clamp(DRAG_LIM_MIN,DRAG_LIM_MAX)
@@ -34,6 +46,8 @@ func handle_dragging():
 	var diff: Vector2 = new_vector - _dragged_vector
 	if diff.length() > 0 and !stretch_sound.playing:
 		stretch_sound.play()
+	
+	scale_arrow()
 	_dragged_vector = new_vector
 	position = _start + new_vector
 
@@ -42,6 +56,19 @@ func start_dragging():
 	_is_dragging = true
 	_drag_start = get_global_mouse_position()
 	
+func start_release():
+	arrow.hide()
+	_is_dragging = false
+	freeze = false
+	apply_central_impulse(calculate_impulse())
+	launch_sound.play()
+
+
+func scale_arrow() -> void:
+	var imp_len: float = calculate_impulse().length()
+	var perc: float = clamp(imp_len / IMPULSE_MAX, 0.0, 1.0)
+	arrow.scale.x = lerpf(_arrow_scale_x, _arrow_scale_x * 2, perc) # calculates how much the arrow should scale from regular to twice the size by using max impulse and perc going from 0 to 1
+	arrow.rotation = (_start - position).angle() # grabs the vector the bird moved and points arrow towards the opposite of where it went
 
 
 func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
