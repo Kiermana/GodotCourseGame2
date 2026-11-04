@@ -14,9 +14,11 @@ scale = Vector2(1.1318359, 1)
 texture = ExtResource("1_fe7a1")
 centered = false
 
-
 [node name="Water" parent="." unique_id=461978898 instance=ExtResource("3_2wk6i")]
 position = Vector2(587, 627)
 
 [node name="Start" type="Marker2D" parent="." unique_id=1482694484]
 position = Vector2(137, 460)
+
+[node name="Cup" parent="." unique_id=1530998773 instance=ExtResource("4_fu0cx")]
+position = Vector2(420, 495)

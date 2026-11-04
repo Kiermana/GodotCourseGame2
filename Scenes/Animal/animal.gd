@@ -11,6 +11,7 @@ const IMPULSE_MAX: float = 2000.0
 @onready var label: Label = $Label
 @onready var arrow: Sprite2D = $Arrow
 @onready var stretch_sound: AudioStreamPlayer2D = $StretchSound
+@onready var kick_sound: AudioStreamPlayer2D = $KickSound
 
 var _start: Vector2 = Vector2.ZERO
 var _drag_start: Vector2 = Vector2.ZERO
@@ -81,3 +82,16 @@ func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> voi
 	if event.is_action_pressed("drag"):
 		input_event.disconnect(_on_input_event)
 		start_dragging()
+
+
+func _on_body_entered(body: Node) -> void:
+	if !kick_sound.playing:
+		kick_sound.play()
+
+
+func _on_sleeping_state_changed() -> void:
+	if sleeping:
+		for body in get_colliding_bodies():
+			if body is Cup:
+				body.die()
+		die()
