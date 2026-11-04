@@ -34,7 +34,7 @@ func _process(_delta: float) -> void:
 		#debug string
 	label.text = debug_str
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if _is_dragging: handle_dragging()
 
 func calculate_impulse():
@@ -71,12 +71,13 @@ func scale_arrow() -> void:
 	arrow.rotation = (_start - position).angle() # grabs the vector the bird moved and points arrow towards the opposite of where it went
 
 func die():
+	SignalHub.emit_on_animal_died()
 	queue_free()
 
 
 
 
-func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event.is_action_pressed("drag"):
 		input_event.disconnect(_on_input_event)
 		start_dragging()

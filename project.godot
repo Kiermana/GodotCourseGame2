@@ -15,6 +15,10 @@ run/main_scene="uid://cdelf7xb377e5"
 config/features=PackedStringArray("4.7", "Mobile")
 config/icon="uid://dsbcntmlueqyr"
 
+[autoload]
+
+SignalHub="*uid://xocmq7m4rlfw"
+
 [display]
 
 window/stretch/mode="canvas_items"
