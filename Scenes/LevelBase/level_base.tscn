@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://db8qvmqd4o8ni" path="res://Scenes/LevelBase/level_base.gd" id="1_2wk6i"]
 [ext_resource type="Texture2D" uid="uid://d0h8tl5wxu6iu" path="res://Assets/scene/colored_castle.png" id="1_fe7a1"]
 [ext_resource type="PackedScene" uid="uid://uidfsm6s7nw4" path="res://Scenes/water/water.tscn" id="3_2wk6i"]
+[ext_resource type="PackedScene" uid="uid://cmr0ohs8u1emb" path="res://Scenes/Cup/cup.tscn" id="4_fu0cx"]
 
 [node name="LevelBase" type="Node" unique_id=873146158]
 script = ExtResource("1_2wk6i")
@@ -13,8 +14,19 @@ scale = Vector2(1.1318359, 1)
 texture = ExtResource("1_fe7a1")
 centered = false
 
+<<<<<<< Updated upstream
 [node name="Water" parent="." unique_id=461978898 instance=ExtResource("3_2wk6i")]
 position = Vector2(587, 627)
 
 [node name="Start" type="Marker2D" parent="." unique_id=1482694484]
 position = Vector2(137, 460)
+=======
+[node name="Animal" parent="." unique_id=824144512 instance=ExtResource("2_1l5ts")]
+position = Vector2(294, 380)
+
+[node name="Water" parent="." unique_id=461978898 instance=ExtResource("3_2wk6i")]
+position = Vector2(587, 627)
+
+[node name="Cup" parent="." unique_id=1530998773 instance=ExtResource("4_fu0cx")]
+position = Vector2(536, 490)
+>>>>>>> Stashed changes
