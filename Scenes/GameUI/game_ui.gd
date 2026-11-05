@@ -12,6 +12,7 @@ var _attempts: int = -1
 @onready var music: AudioStreamPlayer = $Music
 @onready var attempts_label: Label = $MC/VB/HbAttempts/AttemptsLabel
 
+const MAIN = preload("res://Scenes/Main/main.tscn")
 
 
 # Called when the node enters the scene tree for the first time.
@@ -35,3 +36,7 @@ func cup_destroyed():
 		music.play()
 		vb_complete.show()
 		get_tree().paused = true
+
+func _unhandled_input(event: InputEvent) -> void:
+	if Input.is_action_just_pressed("ui_cancel"):
+		get_tree().change_scene_to_packed(MAIN)
