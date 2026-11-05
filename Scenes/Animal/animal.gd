@@ -28,12 +28,13 @@ func _ready() -> void:
 	_arrow_scale_x = arrow.scale.x
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	var debug_str: String = "FR:%s CC:%d SL:%s\n" % [freeze,get_contact_count(),sleeping]
-	debug_str += "is_dragging: %s drag_start: %0.f, %0.f" % [ _is_dragging, _drag_start.x, _drag_start.y]
-	debug_str += "\ndragged_vector:%0.f, %0.f" % [_dragged_vector.x, _dragged_vector.y]
-	debug_str += "\nimpulse:%0.f, %0.f" % [calculate_impulse().x, calculate_impulse().y]
+	pass
+	#var debug_str: String = "FR:%s CC:%d SL:%s\n" % [freeze,get_contact_count(),sleeping]
+	#debug_str += "is_dragging: %s drag_start: %0.f, %0.f" % [ _is_dragging, _drag_start.x, _drag_start.y]
+	#debug_str += "\ndragged_vector:%0.f, %0.f" % [_dragged_vector.x, _dragged_vector.y]
+	#debug_str += "\nimpulse:%0.f, %0.f" % [calculate_impulse().x, calculate_impulse().y]
 		#debug string
-	label.text = debug_str
+	#label.text = debug_str
 
 func _physics_process(_delta: float) -> void:
 	if _is_dragging: handle_dragging()
@@ -58,6 +59,7 @@ func start_dragging():
 	_drag_start = get_global_mouse_position()
 	
 func start_release():
+	SignalHub.emit_on_attempt_made()
 	arrow.hide()
 	_is_dragging = false
 	freeze = false
