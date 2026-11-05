@@ -15,6 +15,7 @@ texture = ExtResource("1_fe7a1")
 centered = false
 
 [node name="Water" parent="." unique_id=461978898 instance=ExtResource("3_2wk6i")]
+z_index = 1
 position = Vector2(587, 627)
 
 [node name="Start" type="Marker2D" parent="." unique_id=1482694484]

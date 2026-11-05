@@ -35,6 +35,7 @@ func cup_destroyed():
 	if _current_cups == 0:
 		music.play()
 		vb_complete.show()
+		ScoreManager.set_score_for_current_level(_attempts)
 		get_tree().paused = true
 
 func _unhandled_input(event: InputEvent) -> void:

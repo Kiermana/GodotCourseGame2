@@ -18,6 +18,7 @@ config/icon="uid://dsbcntmlueqyr"
 [autoload]
 
 SignalHub="*uid://xocmq7m4rlfw"
+ScoreManager="*uid://bqrx2cu16i7n3"
 
 [display]
 
